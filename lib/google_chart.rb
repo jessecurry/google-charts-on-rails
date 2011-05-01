@@ -14,7 +14,7 @@ class GoogleChart
     :bar_horizontal_stacked => 'bhs',
     :bar_vertical_stacked => 'bvs',
     :bar_horizontal_grouped => 'bhg',
-    :bar_vertical_grouped => 'bhg',
+    :bar_vertical_grouped => 'bvg',
     :pie => 'p',
     :pie_3d => 'p3',
     :venn => 'v',
