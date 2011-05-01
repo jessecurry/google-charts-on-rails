@@ -14,7 +14,7 @@ class GoogleChart
     :bar_horizontal_stacked => 'bhs',
     :bar_vertical_stacked => 'bvs',
     :bar_horizontal_grouped => 'bhg',
-    :bar_vertical_grouped => 'bhg',
+    :bar_vertical_grouped => 'bvg',
     :pie => 'p',
     :pie_3d => 'p3',
     :venn => 'v',
@@ -25,6 +25,9 @@ class GoogleChart
   SIZE_MATCHING_REGEX = /([0-9]+)x([0-9]+)/i.freeze
   DEFAULT_HEIGHT = 200
   DEFAULT_WIDTH = 200
+  DEFAULT_BAR_WIDTH = 23
+  DEFAULT_BAR_SPACING = 4
+  DEFAULT_GROUP_SPACING = 8
   def self.method_missing(method, *args)
     #TODO make it thread safe by creating a separate class, presently it could be bad
     protect_from_deep_stack do
@@ -62,6 +65,7 @@ class GoogleChart
   #TODO: add support for bar width and spacing chbh=<bar width in pixels>,<optional space between groups>
   attr_accessor :bar_width
   attr_accessor :bar_spacing
+  attr_accessor :group_spacing
   attr_writer :data_encoding_type
   def data_encoding_type
     #TODO: identify the data type automatically after the data array is set
@@ -76,6 +80,9 @@ class GoogleChart
     params[DATA_VAR] = encode_data
     params[LABELS_VAR] = join_labels if (@labels && @show_labels)
     params[COLORS_VAR] = join(@colors) if (@colors)
+    if @type.to_s.include?('bar')
+      params[BAR_WIDTH_SPACING_VAR] = "#{@bar_width||DEFAULT_BAR_WIDTH},#{@bar_spacing||DEFAULT_BAR_SPACING},#{@group_spacing||DEFAULT_GROUP_SPACING}"
+    end 
     
     chart_params = []
     params.each_pair do |key, value|
