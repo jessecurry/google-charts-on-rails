@@ -8,6 +8,12 @@ class GoogleChart
   LABELS_VAR = 'chl'.freeze
   COLORS_VAR = 'chco'.freeze
   BAR_WIDTH_SPACING_VAR = 'chbh'.freeze
+  VISIBLE_AXES_VAR = 'chxt'.freeze
+  VISIBLE_AXES_VALUES = {
+    :x => 'x',
+    :y => 'y',
+    :xy => 'x,y'
+  }.freeze
   TYPE_VAR_VALUES = {
     :line => 'lc',
     :line_xy => 'lxy',
@@ -62,6 +68,7 @@ class GoogleChart
   attr_accessor :height
   attr_accessor :width
   attr_accessor :show_labels
+  attr_accessor :visible_axes
   #TODO: add support for bar width and spacing chbh=<bar width in pixels>,<optional space between groups>
   attr_accessor :bar_width
   attr_accessor :bar_spacing
@@ -80,6 +87,7 @@ class GoogleChart
     params[DATA_VAR] = encode_data
     params[LABELS_VAR] = join_labels if (@labels && @show_labels)
     params[COLORS_VAR] = join(@colors) if (@colors)
+    params[VISIBLE_AXES_VAR] = VISIBLE_AXES_VALUES[@visible_axes]
     if @type.to_s.include?('bar')
       params[BAR_WIDTH_SPACING_VAR] = "#{@bar_width||DEFAULT_BAR_WIDTH},#{@bar_spacing||DEFAULT_BAR_SPACING},#{@group_spacing||DEFAULT_GROUP_SPACING}"
     end 
